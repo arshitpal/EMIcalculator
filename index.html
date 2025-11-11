@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan Eligibility & EMI Calculator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo-section">
+                <div class="logo">
+                    <img src="logo.jpg" alt="Company Logo" class="logo-img">
+                </div>
+                <div class="logo-text">
+                    <h1>Quantum</h1>
+                    <p>Smart Loan & EMI Calculator</p>
+                </div>
+            </div>
+            <div class="header-stats">
+                <div class="stat-item">
+                    <span class="stat-number" id="totalCalculations">  </span>
+                    <span class="stat-label">    </span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">   </span>
+                    <span class="stat-label">  </span>
+                </div>
+            </div>
+        </header>
+        
+        <div id="userDataForm" class="section">
+            <h2>Loan Calculator</h2>
+            <form id="userData">
+                <div class="form-row">
+                    <div class="form-col">
+                        <label>Calculator Type</label>
+                        <select id="calculatorType" onchange="toggleCalculatorMode()">
+                            <option value="eligibility">Loan Eligibility Calculator</option>
+                            <option value="emi">EMI Calculator</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row" id="employmentRow">
+                    <div class="form-col">
+                        <label>Employment Type</label>
+                        <div class="radio-group">
+                            <input type="radio" id="salaried" name="employment" value="salaried" checked>
+                            <label for="salaried">Salaried</label>
+                            <input type="radio" id="selfEmployed" name="employment" value="self-employed">
+                            <label for="selfEmployed">Self Employed</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-row" id="incomeRow">
+                    <div class="form-col">
+                        <label>Monthly Income: ₹<span id="incomeValue">50,000</span></label>
+                        <input type="range" id="incomeSlider" min="10000" max="500000" step="5000" value="50000">
+                        <input type="number" id="customIncome" placeholder="Monthly Income" value="50000">
+                    </div>
+                </div>
+                
+                <div class="form-row" id="loanAmountRow" style="display: none;">
+                    <div class="form-col">
+                        <label>Loan Amount: ₹<span id="loanAmountValue">1,00,000</span></label>
+                        <input type="range" id="loanAmountSlider" min="50000" max="10000000" step="10000" value="100000">
+                        <input type="number" id="loanAmount" placeholder="Loan Amount" value="100000">
+                    </div>
+                </div>
+                
+                <div class="form-row" id="existingEmiRow">
+                    <div class="form-col">
+                        <label>Other EMI's: ₹<span id="existingEmiValue">20,000</span></label>
+                        <input type="range" id="existingEmiSlider" min="0" max="100000" step="1000" value="20000">
+                        <div class="button-group">
+                            <button type="button" class="emi-btn" data-value="5000">5K</button>
+                            <button type="button" class="emi-btn" data-value="10000">10K</button>
+                            <button type="button" class="emi-btn" data-value="20000">20K</button>
+                            <button type="button" class="emi-btn" data-value="30000">30K</button>
+                            <button type="button" class="emi-btn" data-value="40000">40K</button>
+                            <button type="button" class="emi-btn" data-value="50000">50K</button>
+                        </div>
+                        <input type="number" id="existingEmi" placeholder="Existing EMI" value="20000">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-col">
+                        <label>Interest Rate: <span id="interestRateValue">7.7</span>%</label>
+                        <input type="range" id="interestRateSlider" min="1" max="25" step="0.1" value="7.7">
+                        <div class="button-group">
+                            <button type="button" class="rate-btn" data-value="1">1%</button>
+                            <button type="button" class="rate-btn" data-value="5">5%</button>
+                            <button type="button" class="rate-btn" data-value="10">10%</button>
+                            <button type="button" class="rate-btn" data-value="15">15%</button>
+                            <button type="button" class="rate-btn" data-value="20">20%</button>
+                        </div>
+                        <input type="number" id="interestRate" placeholder="Interest Rate" value="7.7" step="0.1">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-col">
+                        <label>Duration: <span id="durationValue">2</span> years</label>
+                        <input type="range" id="durationSlider" min="0.5" max="30" step="0.5" value="2">
+                        <div class="button-group">
+                            <button type="button" class="duration-btn" data-value="0.5">6 Months</button>
+                            <button type="button" class="duration-btn" data-value="1">1 Year</button>
+                            <button type="button" class="duration-btn" data-value="2">2 Years</button>
+                            <button type="button" class="duration-btn custom-btn">Custom</button>
+                        </div>
+                        <input type="number" id="loanDuration" placeholder="Duration in years" value="2" step="0.5">
+                    </div>
+                </div>
+                
+                <button type="submit" id="calculateBtn">Calculate Eligibility</button>
+            </form>
+            
+            <div id="quickResults" class="quick-results">
+                <div class="result-item">
+                    <h4 id="result1Label">Total Eligible Amount</h4>
+                    <div class="amount" id="eligibleAmount">₹68,577</div>
+                </div>
+                <div class="result-item">
+                    <h4 id="result2Label">Total EMI</h4>
+                    <div class="amount" id="totalEmi">₹11,688</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="results" class="section hidden">
+            <div id="eligibilityResult"></div>
+            <div id="loanLimits"></div>
+            <div id="emiResult"></div>
+            <div id="schedule"></div>
+            <div id="summary"></div>
+            <button onclick="resetCalculator()">Start Over</button>
+        </div>
+        
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <img src="logo.jpg" alt="Company Logo" class="footer-logo-img">
+                        <h3>Quantum</h3>
+                    </div>
+                    <p>Your trusted partner for loan calculations and financial planning. Get accurate EMI calculations and loan eligibility checks instantly.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Team Member</h4>
+                    <ul>
+                        <li><a href="#">Arshit Pal</a></li>
+                        <li><a href="#">Abhishek</a></li>
+                        <li><a href="#">Iram</a></li>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Team Member </h4>
+                    <ul>
+                        <li><a href="#">EMI Calculator</a></li>
+                        <li><a href="#">Eligibility Check</a></li>
+                        <li><a href="#">Interest Rates</a></li>
+                        <li><a href="#">Loan Comparison</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Contact Info</h4>
+                    <div class="contact-info">
+                        <p><i class="icon">📧</i> info@quantum.com</p>
+                        <p><i class="icon">📞</i> +91 98765 43210</p>
+                        <p><i class="icon">📍</i> Roorkee, India</p>
+                    </div>
+                    <div class="social-links">
+                        <a href="#" class="social-link">📘</a>
+                        <a href="#" class="social-link">🐦</a>
+                        <a href="#" class="social-link">💼</a>
+                        <a href="#" class="social-link">📷</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="footer-bottom-content">
+                    <p>&copy; 2024 Quantum All rights reserved.</p>
+                    <div class="footer-links">
+                        <a href="#">Privacy Policy</a>
+                        <a href="#">Terms of Service</a>
+                        <a href="#">Disclaimer</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
